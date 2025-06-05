@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Loader2, LogIn, UserPlus, Send } from 'lucide-react'
 import { useSendTransaction } from '@privy-io/react-auth'
 import { useState } from 'react'
+import { Header } from '@/components/header'
 
 export default function Home() {
   const { 
@@ -19,11 +20,6 @@ export default function Home() {
   const { sendTransaction } = useSendTransaction()
   const [txHash, setTxHash] = useState<string>('')
   const [isTransacting, setIsTransacting] = useState(false)
-
-  const handleLogout = async () => {
-    await logout()
-    router.push('/login')
-  }
 
   const handleMockTransaction = async () => {
     if (!isAuthenticated || !privyUser) {
@@ -59,55 +55,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center text-2xl gap-3">
-              TAQ
-            </div>
-            
-            <div className="flex items-center gap-4">
-              {isAuthenticated && userData ? (
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <p className="font-medium">{userData.full_name}</p>
-                    <p className="text-sm text-muted-foreground">{userData.email}</p>
-                  </div>
-                  <button
-                    onClick={handleLogout}
-                    className="px-4 py-2 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80"
-                  >
-                    Logout
-                  </button>
-                </div>
-              ) : (
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => router.push('/login')}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
-                  >
-                    <LogIn className="h-4 w-4" />
-                    Login
-                  </button>
-                  <button
-                    onClick={() => router.push('/onboarding')}
-                    className="flex items-center gap-2 px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/80"
-                  >
-                    <UserPlus className="h-4 w-4" />
-                    Sign Up
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
-
       {/* Main Content */}
       <main className="container mx-auto px-6 py-8">
         <div className="space-y-8">
-
           {/* Mock Transaction Section - Only show when authenticated */}
           {isAuthenticated && userData && (
             <div className="bg-card border border-border rounded-lg p-6">
