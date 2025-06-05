@@ -75,14 +75,14 @@ function UserProviderInner({ children }: { children: React.ReactNode }) {
         }
 
         // Also check if cookies are missing to prevent reauth attempts
-        const hasZapToken =
-          document.cookie.includes('zap-user-token') ||
-          document.cookie.includes('zap-refresh-token');
+        const hasToken =
+          document.cookie.includes('user-token') ||
+          document.cookie.includes('refresh-token');
         const hasPrivyToken =
           document.cookie.includes('privy-token') ||
           document.cookie.includes('privy-session');
 
-        if (!hasZapToken && !hasPrivyToken && authenticated) {
+        if (!hasToken && !hasPrivyToken && authenticated) {
           console.log(
             'No auth cookies found despite authenticated state, likely mid-logout',
           );

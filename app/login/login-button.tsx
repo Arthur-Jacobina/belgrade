@@ -7,7 +7,7 @@ import { useUser } from '@/hooks/use-user'
 import { useToast } from '@/hooks/use-toast'
 import { Loader2 } from 'lucide-react'
 
-export function LoginForm() {
+export function LoginButton() {
   const router = useRouter()
   const { toast } = useToast()
   const { login } = useLogin({
@@ -45,12 +45,12 @@ export function LoginForm() {
         router.push('/onboarding')
       }
     } catch (error) {
-      console.error('Error during user verification:', error)
-      toast({
-        title: 'Error',
-        description: 'Failed to verify user. Please try again.',
-        variant: 'destructive'
-      })
+      console.log('Error during user verification:', error)
+      // toast({
+      //   title: 'Error',
+      //   description: 'Failed to verify user. Please create an account.',
+      //   variant: 'destructive'
+      // })
     }
   }
 
@@ -81,24 +81,13 @@ export function LoginForm() {
 
   return (
     <div className="w-full items-center justify-center flex flex-col text-center">
-      <div>
-        <h1>Get Started</h1>
-        <p className="text-muted-foreground mb-6">
-          Sign in to start building your web3 agent teams
-        </p>
-      </div>
-      
       <button
         className="h-12 text-lg px-6 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
         onClick={login}
         disabled={!isPrivyReady}
       >
-        <div className="flex items-center">Sign in with Privy</div>
+          <div className="flex items-center">Sign in with Privy</div>
       </button>
-      
-      <p className="text-xs text-muted-foreground mt-4">
-        Secure authentication powered by Privy
-      </p>
     </div>
   )
 } 

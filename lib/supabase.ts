@@ -6,19 +6,12 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 /*
-QUICK FIX: Run these SQL commands in your Supabase SQL editor:
-
 -- Disable RLS temporarily to allow user creation
 ALTER TABLE users DISABLE ROW LEVEL SECURITY;
 
 -- Drop existing policies that are causing issues
 DROP POLICY IF EXISTS "Users can view their own data" ON users;
 DROP POLICY IF EXISTS "Users can insert their own data" ON users;
-
-Note: This removes security temporarily. For production, you'll need to:
-1. Set up proper Privy-Supabase JWT integration, OR
-2. Create API routes that handle authentication server-side, OR  
-3. Use Supabase auth with custom claims
 */
 
 // Database Types
@@ -42,13 +35,13 @@ export async function verifyUser(privyId: string): Promise<User | null> {
       .single()
 
     if (error) {
-      console.error('Error verifying user:', error)
+      console.log('Error verifying user:', error)
       return null
     }
 
     return data
   } catch (error) {
-    console.error('Error verifying user:', error)
+    console.log('Error verifying user:', error)
     return null
   }
 }

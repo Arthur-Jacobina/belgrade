@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { LoginForm } from '@/components/login-form'
+import { LoginButton } from '@/app/login/login-button'
 
 export const metadata: Metadata = {
   title: 'Login | Taq',
@@ -13,10 +13,7 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2">Taq</h1>
         </div>
-        
-        <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
-          <LoginForm />
-        </div>
+          <LoginButton />
       </div>
     </div>
   )

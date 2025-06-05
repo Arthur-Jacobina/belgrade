@@ -6,6 +6,14 @@ import { useUser } from '@/hooks/use-user'
 import { useToast } from '@/hooks/use-toast'
 import { createUser } from '@/lib/supabase'
 import { Loader2, Check, AlertCircle, ArrowRight } from 'lucide-react'
+import { 
+  FormContainer, 
+  FormField, 
+  FormGroup, 
+  FormButton, 
+  LoadingState, 
+  FormMessage 
+} from './'
 
 interface OnboardingFormData {
   organizationName: string
@@ -142,121 +150,62 @@ export function OnboardingForm() {
   const getButtonIcon = () => {
     switch (submissionStatus) {
       case 'creating-user':
-        return <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        return <Loader2 className="h-4 w-4 animate-spin" />
       case 'success':
-        return <Check className="mr-2 h-4 w-4" />
+        return <Check className="h-4 w-4" />
       case 'error':
-        return <AlertCircle className="mr-2 h-4 w-4" />
+        return <AlertCircle className="h-4 w-4" />
       default:
-        return isFormComplete ? <ArrowRight className="mr-2 h-4 w-4" /> : null
+        return isFormComplete ? <ArrowRight className="h-4 w-4" /> : null
     }
   }
 
   const getButtonVariant = () => {
-    if (submissionStatus === 'success') return 'bg-green-600 hover:bg-green-700'
-    if (submissionStatus === 'error') return 'bg-red-600 hover:bg-red-700'
-    return 'bg-primary hover:bg-primary/90'
+    if (submissionStatus === 'success') return 'success'
+    if (submissionStatus === 'error') return 'error'
+    return 'primary'
   }
 
   // Show loading spinner during initial check
   if (initialCheck || isLoadingUserData) {
-    return (
-      <div className="flex justify-center items-center py-10">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <span className="ml-2">Checking account status...</span>
-      </div>
-    )
+    return <LoadingState message="Checking account status..." />
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <label htmlFor="fullName" className="text-sm font-medium">
-            Username *
-          </label>
-          <input
-            id="fullName"
-            placeholder="Enter your username"
-            value={formData.fullName}
-            onChange={(e) =>
-              setFormData({ ...formData, fullName: e.target.value })
-            }
-            required
-            disabled={isLoading}
-            className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:ring-2 focus:ring-primary/20 transition-all disabled:opacity-50"
-          />
-        </div>
+    <FormContainer onSubmit={handleSubmit}>
+      <FormGroup>
+        <FormField
+          id="fullName"
+          label="Username"
+          placeholder="Enter your username"
+          value={formData.fullName}
+          onChange={(value) => setFormData({ ...formData, fullName: value })}
+          required
+          disabled={isLoading}
+        />
+        <FormField
+          id="organizationName"
+          label="Organization Name"
+          placeholder="Enter organization name"
+          value={formData.organizationName}
+          onChange={(value) => setFormData({ ...formData, organizationName: value })}
+          disabled={isLoading}
+        />
+      </FormGroup>
 
-        <div className="space-y-2">
-          <label htmlFor="email" className="text-sm font-medium">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={formData.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
-            disabled={isLoading}
-            className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:ring-2 focus:ring-primary/20 transition-all disabled:opacity-50"
-          />
-          <p className="text-xs text-muted-foreground">
-            From your Privy account
-          </p>
-        </div>
-
-        <div className="space-y-2">
-          <label htmlFor="organizationName" className="text-sm font-medium">
-            Organization Name
-          </label>
-          <input
-            id="organizationName"
-            placeholder="Enter organization name"
-            value={formData.organizationName}
-            onChange={(e) =>
-              setFormData({ ...formData, organizationName: e.target.value })
-            }
-            disabled={isLoading}
-            className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground focus:ring-2 focus:ring-primary/20 transition-all disabled:opacity-50"
-          />
-        </div>
-
-        {formData.wallet && (
-          <div className="space-y-2">
-            <label htmlFor="wallet" className="text-sm font-medium">
-              Wallet Address
-            </label>
-            <input
-              id="wallet"
-              value={formData.wallet}
-              disabled
-              className="w-full px-3 py-2 border border-border rounded-md bg-muted text-muted-foreground font-mono text-sm"
-            />
-            <p className="text-xs text-muted-foreground">
-              Connected from your Privy wallet
-            </p>
-          </div>
-        )}
-      </div>
-
-      <button
-        className={`w-full transition-all duration-300 relative overflow-hidden group h-12 px-4 py-2 rounded-md text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center ${getButtonVariant()}`}
+      <FormButton
         type="submit"
         disabled={isLoading || !isFormComplete}
+        loading={isLoading}
+        variant={getButtonVariant()}
+        icon={getButtonIcon()}
       >
-        <span className="relative flex items-center justify-center">
-          {getButtonIcon()}
-          {getButtonText()}
-        </span>
-      </button>
+        {getButtonText()}
+      </FormButton>
 
       {!isFormComplete && !isLoading && (
-        <p className="text-xs text-muted-foreground text-center mt-2">
-          Please enter a username to continue
-        </p>
+        <FormMessage message="Please enter a username to continue" />
       )}
-    </form>
+    </FormContainer>
   )
 } 

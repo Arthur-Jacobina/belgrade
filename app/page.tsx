@@ -1,9 +1,8 @@
 'use client'
 
 import { useUser } from '@/hooks/use-user'
-import { UsersTable } from '@/components/users-table'
 import { useRouter } from 'next/navigation'
-import { Loader2, LogIn, UserPlus, Users, Send } from 'lucide-react'
+import { Loader2, LogIn, UserPlus, Send } from 'lucide-react'
 import { useSendTransaction } from '@privy-io/react-auth'
 import { useState } from 'react'
 
@@ -156,11 +155,6 @@ export default function Home() {
               </div>
             </div>
           )}
-
-          {/* Users Table */}
-          <div className="bg-card border border-border rounded-lg p-6">
-            <UsersTable />
-          </div>
         </div>
       </main>
     </div>
